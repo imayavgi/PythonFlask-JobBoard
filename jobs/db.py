@@ -17,7 +17,10 @@ def execute_sql(sql, values=(), commit=False, single=False, jsonify=False):
     if commit:
         results = connection.commit()
     else :
-        results = [cursor.fetchone()] if single else cursor.fetchall()
+        if jsonify:
+            results = [cursor.fetchone()] if single else cursor.fetchall()
+        else :
+            results = cursor.fetchone() if single else cursor.fetchall()
     
     if jsonify:
         results = [dict(zip([key[0] for key in cursor.description], row)) for row in results]
